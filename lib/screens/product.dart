@@ -32,12 +32,17 @@ class _ProductScreenState extends State<ProductScreen> {
   void initState() {
     super.initState();
     selectedColor = widget.selectedColor;
+
+    // Ensure selectedColor exists in colorImageMap
+    if (!colorImageMap.containsKey(selectedColor)) {
+      selectedColor = colorImageMap.keys.first; // Default to the first color
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFfaf4ef), 
+      backgroundColor: const Color(0xFFfaf4ef),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -91,7 +96,8 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: Hero(
                     tag: widget.imageTag, // Use the same tag passed from HomeScreen
                     child: Image.asset(
-                      colorImageMap[selectedColor]!,
+                      colorImageMap[selectedColor] ??
+                          colorImageMap.values.first, // Default to first image
                       height: 300,
                       fit: BoxFit.contain,
                     ),
@@ -99,7 +105,6 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
               ),
             ),
-           
             // Color Options
             Padding(
               padding: const EdgeInsetsDirectional.only(start: 100.0, end: 100.0),

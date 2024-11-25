@@ -187,7 +187,7 @@ class _NotificationsState extends State<Notifications> {
               ),
               // Lock icon for locked notifications
               if (notification['isLocked'] != null)
-                Icon(
+                const Icon(
                   Icons.lock,
                   color: Colors.grey,
                 ),

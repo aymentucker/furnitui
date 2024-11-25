@@ -1,28 +1,28 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:furnitui/screens/product.dart';
-import 'package:furnitui/utils/colors.dart';
 
-Widget productCard(BuildContext context, int index) {
-  List<String> productImages = [
-    'assets/images/product1.png',
-    'assets/images/product2.png',
-    'assets/images/product3.png',
-    'assets/images/product4.png',
-  ];
+Color _generateRandomColor() {
+  Random random = Random();
+  return Color.fromRGBO(
+    random.nextInt(256),
+    random.nextInt(256),
+    random.nextInt(256),
+    1,
+  );
+}
 
-  List<double> productPrices = [199.00, 149.00, 249.00, 129.00]; // Sample product prices
-  List<bool> hasDiscount = [false, false, true, false]; // Indicates if product has discount
-  List<String> discountLabels = ['-25%']; // Sample discount label
+Widget productCard(BuildContext context, Map<String, dynamic> product, int index) {
+  final randomColor = _generateRandomColor();
 
   return GestureDetector(
     onTap: () {
-      // Navigate to ProductScreen and pass the selected product's details
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ProductScreen(
-            imageTag: 'productImage$index', // Pass the unique tag for Hero animation
-            selectedColor: Colors.brown, // Pass any necessary data
+            imageTag: 'productImage$index',
+            selectedColor: randomColor, // Pass the random color to ProductScreen
           ),
         ),
       );
@@ -30,57 +30,52 @@ Widget productCard(BuildContext context, int index) {
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: MyColors.secondaryColor,
+        color: randomColor.withOpacity(0.1), // Apply random color with slight transparency
       ),
       child: Stack(
         children: [
           Column(
             children: [
-              // Product image with Hero animation
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Hero(
-                    tag: 'productImage$index', // Unique tag for Hero animation
+                    tag: 'productImage$index',
                     child: Image.asset(
-                      productImages[index],
+                      product["image"],
                       fit: BoxFit.contain,
                     ),
                   ),
                 ),
               ),
-              // Product price
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
-                  "\$${productPrices[index].toStringAsFixed(2)}",
+                  "\$${product["price"].toStringAsFixed(2)}",
                   style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87),
                 ),
               ),
             ],
           ),
-          // Discount badge (if applicable)
-          if (hasDiscount[index])
+          if (product["hasDiscount"] ?? false)
             Positioned(
               top: 8,
               left: 8,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFDA7635), // Same as button color in the design
+                  color: randomColor, // Use the same random color for the discount badge
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  discountLabels[0], // Use '-25%' as sample discount
+                  product["discountLabel"] ?? '',
                   style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),

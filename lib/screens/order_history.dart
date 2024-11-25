@@ -3,14 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:furnitui/utils/colors.dart';
 import 'package:furnitui/widgets/order_card_widget.dart';
 
-class OrderHistory extends StatefulWidget {
+class OrderHistoryScreen extends StatefulWidget {
   @override
-  _OrderHistoryState createState() => _OrderHistoryState();
+  _OrderHistoryScreenState createState() => _OrderHistoryScreenState();
 }
 
-class _OrderHistoryState extends State<OrderHistory> {
+class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   // Dummy data for order history
-  List<Map<String, dynamic>> orderHistory = [
+  List<Map<String, dynamic>> OrderHistoryScreen = [
     {
       'orderId': 'ORD12345',
       'orderDate': '12 Sep, 2024',
@@ -85,13 +85,13 @@ class _OrderHistoryState extends State<OrderHistory> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: orderHistory.isEmpty
+        child: OrderHistoryScreen.isEmpty
             ? _buildEmptyState() // If empty, show empty state
             : ListView.builder(
                 padding: const EdgeInsets.all(16.0),
-                itemCount: orderHistory.length,
+                itemCount: OrderHistoryScreen.length,
                 itemBuilder: (context, index) {
-                  final order = orderHistory[index];
+                  final order = OrderHistoryScreen[index];
                   return buildOrderCard(
                     context,
                     order['orderId'],
